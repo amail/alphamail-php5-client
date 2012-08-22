@@ -165,7 +165,7 @@
 			{
 				$result = null;
 				while(!feof($this->_stream)){
-					$result .= fgets($this->_stream, self::BUFFER_READ_SIZE);
+					$result .= @fgets($this->_stream, self::BUFFER_READ_SIZE);
 				}
 			}else{
 				throw new HttpSocketConnectionException(
@@ -180,7 +180,7 @@
 			$result = false;
 			
 			if($this->isConnected()){
-				$result = fwrite($this->_stream, $data) === false ? false : true;
+				$result = @fwrite($this->_stream, $data) === false ? false : true;
 			}else{
 				throw new HttpSocketConnectionException(
 				    sprintf("Unable to connect to host '%s:%s'", $host, $port));
