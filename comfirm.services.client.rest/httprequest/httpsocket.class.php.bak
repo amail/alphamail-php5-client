@@ -164,7 +164,7 @@
 			if($this->isConnected())
 			{
 				$result = null;
-				while(!feof($this->_stream)){
+				while(!feof($this->_stream))
 					$result .= fgets($this->_stream, self::BUFFER_READ_SIZE);
 				}
 			}else{

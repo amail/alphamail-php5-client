@@ -27,15 +27,11 @@
     $relative_path = dirname(__FILE__);
 
     // Include service contract
-    require_once($relative_path . "/emailservice.interface.php");
+    require_once($relative_path . "/signatureservice.interface.php");
     
     // Include entities
     require_once($relative_path . "/entities/serviceresponse.class.php");
-    require_once($relative_path . "/entities/emailcontact.class.php");
-    
-    // Include payloads
-    require_once($relative_path . "/entities/emailmessagepayload.class.php");
-    require_once($relative_path . "/entities/idempotentemailmessagepayload.class.php");
+    require_once($relative_path . "/entities/signature.class.php");
     
     // Include exceptions
     require_once($relative_path . "/exceptions/alphamailserviceexception.class.php");
@@ -46,7 +42,7 @@
     // Include restful client
     require_once($relative_path . "/../comfirm.services.client.rest/restful.class.php");
     
-    class AlphaMailEmailService implements IEmailService
+    class AlphaMailSignatureService implements ISignatureService
     {
         private $_client = null;
         private $_service_url = null, $_api_token;
@@ -58,7 +54,7 @@
         
         public static function create()
         {
-            return new AlphaMailEmailService();
+            return new AlphaMailSignatureService();
         }
         
         public function setServiceUrl($service_url)
@@ -74,20 +70,20 @@
             return $this;
         }
         
-        public function queueIdempotent(IdempotentEmailMessagePayload $payload)
-        {
-            throw new NotImplementedException("Not implemented. But on our todo! Contact our support for more information.");
-        }
-        
-        public function queue(EmailMessagePayload $payload)
+        public function getAll()
         {
             $response = null;
             
             try
             {
-                $response = $this->_client->post($this->_service_url . "/email/queue", json_encode($payload));
-                $response->result = $this->cast($response->result, "ServiceResponse");
-                $this->handleErrors($response);
+                $raw_response = $this->_client->get($this->_service_url . "/signatures");
+                $this->handleErrors($raw_response);
+                
+                $response = $this->cast($raw_response->result, "ServiceResponse");
+                
+                foreach($response->result as $key => $value){
+                    $response->result[$key] = $this->cast($value, "Signature");
+                }
             }
             catch(AlphaMailServiceException $exception)
             {
