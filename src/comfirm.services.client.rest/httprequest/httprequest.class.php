@@ -87,8 +87,6 @@
 					$compiler = $this->_outbound_filter_manager->execute(
 					    new HttpPacketCompiler($method, $url, $headers, $body));
 
-					//die($compiler->compile());
-					
 					$result = $socket->writeAndRead($compiler->compile());
 
                     $socket->close();
