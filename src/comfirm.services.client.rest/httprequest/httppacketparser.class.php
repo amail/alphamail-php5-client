@@ -43,7 +43,7 @@
 		public function parse($raw_packet)
 		{
 			// Init vars
-			$packet = (object)null;
+			$package = (object)null;
 			
 			// Seperate header from body, and append parsed data to object
 			$content = $this->separateHeaderFromBody($raw_packet);

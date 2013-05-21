@@ -65,6 +65,7 @@
 		private function getHeaderCollection()
 		{
 		    $headers = new HttpHeaderCollection();
+            $headers->add(new HttpHeaderItem("Content-Type", "application/json"));
 		    $headers->add(new HttpHeaderItem("Accept-Encoding", "gzip, deflate, chunked"));
 		    return $headers;
 		}
