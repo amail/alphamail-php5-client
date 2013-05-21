@@ -37,6 +37,10 @@
             $this->http_status = $http_status;
             $this->inner_exception = $inner_exception;
         }
+
+        public function getErrorCode(){
+            return $this->response == null ? null : $this->response->error_code;
+        }
     }
 
 ?>

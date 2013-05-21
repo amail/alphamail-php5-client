@@ -26,12 +26,12 @@
 	
 	class EmailMessagePayload
 	{
-		public $project_id = 0, $receiver_id = 0;
-	
-		public $receiver_email = "", $receiver_name = "";
-		public $sender_email = "", $sender_name = "";
+		public $project_id = 0;
+
+        public $receiver;
+        public $sender;
 		
-		public $body = "";
+		public $payload = null;
 		
 		protected function __construct(){}
 		
@@ -48,15 +48,20 @@
         
         public function setSender(EmailContact $contact)
         {
-            $this->sender_name = $contact->name;
-            $this->sender_email = $contact->email;
+            $this->sender = array(
+                "email" => $contact->email,
+                "name" => $contact->name
+            );
             return $this;
         }
         
         public function setReceiver(EmailContact $contact)
         {
-            $this->receiver_name = $contact->name;
-            $this->receiver_email = $contact->email;
+            $this->receiver = array(
+                "id" => $contact->id,
+                "email" => $contact->email,
+                "name" => $contact->name
+            );
             return $this;
         }
         
@@ -68,7 +73,7 @@
         
         public function setBodyObject($body)
         {
-            $this->body = json_encode($body);
+            $this->payload = $body;
             return $this;
         }
 	}

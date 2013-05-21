@@ -134,6 +134,12 @@
 			
 			if($port == null)
 				$port = $this->getPort();
+			
+			// Check that OpenSSL is installed
+			if($port == self::SSL_PORT && !function_exists("openssl_sign")){
+				throw new HttpSocketConnectionException(
+				    sprintf("Unable to securely connect to host '%s:%s'. OpenSSL is not installed.", $host, $port));
+			}
             
 			// Try to establish a connection
 			if(($stream = @fsockopen((($port == self::SSL_PORT) ? "ssl://" : null) . $this->getHost(),

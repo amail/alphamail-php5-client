@@ -51,19 +51,22 @@
         private $_client = null;
         private $_service_url = null, $_api_token;
         
-        protected function __construct()
+        public function __construct($token = null)
         {
             $this->_client = new Restful();
+            $this->setServiceUrl("http://api.amail.io/v2/");
+            if($token != null){
+                $this->setApiToken($token);
+            }
         }
-        
-        public static function create()
-        {
+
+        public static function create(){
             return new AlphaMailEmailService();
         }
         
         public function setServiceUrl($service_url)
         {
-            $this->_service_url = $service_url;
+            $this->_service_url = rtrim($service_url, "/");
             return $this;
         }
         
