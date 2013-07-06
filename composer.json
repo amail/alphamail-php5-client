@@ -4,6 +4,7 @@
     "description": "Client for sending Transactional Email with AlphaMail.",
     "keywords": ["send email", "transactional email", "alphamail"],
     "homepage": "http://github.com/comfirm/alphamail-php5-client",
+    "minimum-stability": "stable",
     "license": "MIT",
     "authors": [
         {
