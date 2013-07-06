@@ -1,4 +1,5 @@
 {
+    "version":"1.0.0",
     "name": "alphamail/alphamail",
     "type": "library",
     "description": "Client for sending Transactional Email with AlphaMail.",
