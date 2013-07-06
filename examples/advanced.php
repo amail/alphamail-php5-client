@@ -1,37 +1,23 @@
-﻿<?php
-    
-    /*
-    The MIT License
+<?php
 
-    Copyright (c) Robin Orheden, 2013 <http://amail.io/>
-    
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
+    namespace AlphaMail\Examples;
 
-    The above copyright notice and this permission notice shall be included in
-    all copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-    THE SOFTWARE.
-    */
+    use AlphaMail\Client\EmailService;
+    use AlphaMail\Client\Entities\EmailContact;
+    use AlphaMail\Client\Entities\EmailMessagePayload;
+    use AlphaMail\Client\Exceptions\ValidationException;
+    use AlphaMail\Client\Exceptions\AuthorizationException;
+    use AlphaMail\Client\Exceptions\InternalException;
+    use AlphaMail\Client\Exceptions\ServiceException;
 
     ini_set("display_errors", 1);
     error_reporting(E_ALL);
 
-    include_once("../src/comfirm.alphamail.client/emailservice.class.php");
+    require __DIR__.'/../autoload.php';
 
     // Step #1: Let's start by entering the web service URL and the API-token you've been provided
     // If you haven't gotten your API-token yet. Log into AlphaMail or contact support at 'support@amail.io'.
-    $email_service = AlphaMailEmailService::create()
+    $email_service = EmailService::create()
         ->setServiceUrl("http://api.amail.io/v2/")
         ->setApiToken("YOUR-ACCOUNT-API-TOKEN-HERE");
     
@@ -68,7 +54,7 @@
     }
     // Oh heck. Something went wrong. But don't stop here.
     // If you haven't solved it yourself. Just contact our brilliant support and they will help you.
-    catch (AlphaMailValidationException $exception)
+    catch (ValidationException $exception)
     {
         // Example: Handle request specific error code here
         if ($exception->response->error_code == 3)
@@ -81,17 +67,17 @@
             echo sprintf("Validation error: %s (%d)", $exception->response->message, $exception->response->error_code);
         }
     }
-    catch (AlphaMailAuthorizationException $exception)
+    catch (AuthorizationException $exception)
     {
         // Ooops! You've probably just entered the wrong API-token.
         echo sprintf("Authentication error: %s (%d)", $exception->response->message, $exception->response->error_code);
     }
-    catch (AlphaMailInternalException $exception)
+    catch (InternalException $exception)
     {
         // Not that it is going to happen.. Right :-)
         echo sprintf("Internal error: %s (%d)", $exception->response->message, $exception->response->error_code);
     }
-    catch (AlphaMailServiceException $exception)
+    catch (ServiceException $exception)
     {
         // Most likely your internet connection that is down. We are covered for most things except "multi-data-center-angry-server-bashing-monkeys" (remember who coined it) or.. nuclear bombs.
         // If one blew. Well.. It's just likely that our servers are down.
